@@ -1,0 +1,922 @@
+:root{
+  /* Fine-tune placement without hunting numbers */
+  --fan-top: 120px;    /* distance from bouquet top to fan base (behind roses) */
+  --wrap-bottom: 80px; /* how high the lower wrap sits */
+}
+
+html,body{height:100%}
+body{
+  margin:0;
+  background:linear-gradient(#0e2a4b 0%, #162645 55%, #1a1f38 100%);
+  display:flex; align-items:center; justify-content:center;
+  font-family:system-ui,sans-serif; overflow:hidden; position:relative;
+}
+
+/* Moon + stars */
+.moon{
+  position:absolute; top:48px; right:80px; width:110px; height:110px; border-radius:50%;
+  background:radial-gradient(circle at 40% 40%, #fff 0 45%, #ececec 60%, #cfcfcf 75%, transparent 76%);
+  box-shadow:0 0 70px 20px rgba(255,255,255,.22);
+}
+.star{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;opacity:.85;
+  animation:twinkle 3s ease-in-out infinite alternate}
+@keyframes twinkle{from{transform:scale(1);opacity:.4}to{transform:scale(1.4);opacity:1}}
+
+/* Bouquet root */
+.bouquet{position:relative;width:520px;height:620px}
+
+/* ---------------- WRAP (paper) ---------------- */
+/* Fan of folds sits behind roses. Position with TOP so it anchors to .bouquet */
+.folds{
+  position:absolute; left:50%; top:var(--fan-top); transform:translateX(-50%);
+  width:0; height:0; z-index:2; pointer-events:none;
+}
+.fold{
+  position:absolute; left:50%; top:0; width:230px; height:185px;
+  /* “diamond” petal shape */
+  clip-path:polygon(50% 0%, 90% 60%, 50% 100%, 10% 60%);
+  background:linear-gradient(#111, #000);
+  border-radius:8px;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.55));
+  transform-origin:50% 100%;
+  opacity:.98;
+}
+
+/* Lower cone around stems */
+.wrap-base{
+  position:absolute; left:50%; bottom:var(--wrap-bottom); transform:translateX(-50%);
+  width:420px; height:260px; border-radius:220px 220px 26px 26px;
+  background:radial-gradient(120% 140% at 50% 15%, #1a1a1a 0 45%, #0f0f0f 65%, #000 100%);
+  box-shadow: inset 0 -50px 120px rgba(0,0,0,.4);
+  z-index:1;
+}
+.wrap-base.side{
+  width:360px; height:230px; bottom:calc(var(--wrap-bottom) + 25px);
+  filter:brightness(.9); opacity:.95;
+}
+.wrap-base.side.left{transform:translateX(-50%) rotate(-10deg)}
+.wrap-base.side.right{transform:translateX(-50%) rotate(10deg)}
+
+/* ---------------- STEMS + ROSES ---------------- */
+.stem{
+  position:absolute; bottom:calc(var(--wrap-bottom) + 110px);
+  width:6px; height:230px; left:50%; transform-origin:bottom center;
+  background:linear-gradient(#116437, #1c8a4e); border-radius:4px; z-index:3;
+}
+.stem.short{height:200px; bottom:calc(var(--wrap-bottom) + 130px)}
+
+.stem::before,.stem::after{
+  content:""; position:absolute; width:38px; height:20px; top:55%;
+  background:linear-gradient(#1e9a58, #38bf73); border-radius:20px;
+}
+.stem::before{right:10px; transform:rotate(-28deg)}
+.stem::after {left:10px;  transform:rotate(28deg)}
+
+/* Rose head */
+.flower{position:absolute; left:50%; top:-36px; transform:translateX(-50%); z-index:4;}
+.flower.small{top:-28px; transform:translateX(-50%) scale(.92)}
+
+.flower::before,
+.flower::after{
+  content:""; position:absolute; left:50%; width:60px; height:38px; top:12px;
+  transform:translateX(-50%); border-radius:28px 28px 18px 18px;
+  background:radial-gradient(circle at 50% 40%, #ff5c79 0 40%, #e31141 60%, #bf0a33 100%);
+  filter:drop-shadow(0 0 14px rgba(255,54,90,.45));
+}
+.flower::after{top:0; width:68px; height:42px}
+.flower > i{
+  position:absolute; left:50%; top:12px; transform:translateX(-50%);
+  width:34px; height:34px; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #ff8a9a 0 35%, #ff3a59 55%, #c70731 100%);
+  box-shadow:0 0 20px rgba(255,49,92,.55);
+}
+
+/* ---------------- Ribbon ---------------- */
+.ribbon{
+  position:absolute; left:50%; bottom:calc(var(--wrap-bottom) + 20px);
+  transform:translateX(-50%); width:160px; height:40px; border-radius:22px;
+  background:linear-gradient(45deg, #ff2a4d, #c8002f);
+  box-shadow:0 8px 28px rgba(255,40,90,.35), 0 0 24px rgba(255,40,90,.4) inset;
+  z-index:5;
+
+  /* Bottom cloth folds */
+.bottom-fold {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 160px;
+  height: 140px;
+  background: linear-gradient(to bottom, #111, #000);
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  transform-origin: top center;
+  z-index: 0; /* behind ribbon */
+  opacity: 0.95;
+}
+
+/* Side variations */
+.bottom-fold.left  { transform: translateX(-120%) rotate(-12deg) scale(1.1); }
+.bottom-fold.right { transform: translateX(20%) rotate(12deg) scale(1.1); }
+.bottom-fold.center{ transform: translateX(-50%) rotate(0deg) scale(1.2); }
+
+}
+.ribbon::before,.ribbon::after{
+  content:""; position:absolute; top:50%; width:70px; height:22px; border-radius:20px;
+  background:linear-gradient(45deg, #ff2a4d, #c8002f);
+}
+.ribbon::before{left:-52px; transform:translateY(-50%) rotate(-18deg)}
+.ribbon::after {right:-52px; transform:translateY(-50%) rotate(18deg)}
+
+/* Bottom wrap petals */
+.bottom-wrap {
+  position: absolute;
+  bottom: 40px; /* just above the ribbon */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 160px;
+  z-index: 1;
+}
+
+.bottom-flap {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 160px;
+  height: 180px;
+  background: radial-gradient(circle at top, #222, #000);
+  border-radius: 80px 80px 20px 20px;
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+  opacity: 0.95;
+  transform-origin: bottom center;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.5));
+}
+
+/* Rotations for overlap */
+.bottom-flap:nth-child(1) { transform: translateX(-50%) rotate(-25deg) scale(1.05); }
+.bottom-flap:nth-child(2) { transform: translateX(-50%) rotate(-10deg) scale(1.1); }
+.bottom-flap:nth-child(3) { transform: translateX(-50%) rotate(10deg) scale(1.1); }
+.bottom-flap:nth-child(4) { transform: translateX(-50%) rotate(25deg) scale(1.05); }
+
+/* Magical aura around bouquet */
+.bouquet::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(0,255,255,0.35) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse 4s ease-in-out infinite;
+  filter: blur(80px);
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+
+/* Aura pulsing */
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+}
+
+/* Wisps */
+.wisp {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  width: 8px;
+  height: 40px;
+  background: linear-gradient(to top, rgba(0,255,255,0.6), transparent);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: float 5s ease-in-out infinite;
+  mix-blend-mode: screen;
+  filter: blur(4px);
+}
+
+.wisp:nth-child(1) { left: 45%; animation-delay: 0s; }
+.wisp:nth-child(2) { left: 50%; animation-delay: 1s; }
+.wisp:nth-child(3) { left: 55%; animation-delay: 2s; }
+
+@keyframes float {
+  0% { transform: translateY(0) scaleX(1); opacity: 0.7; }
+  50% { transform: translateY(-80px) scaleX(1.3); opacity: 0.4; }
+  100% { transform: translateY(-150px) scaleX(0.8); opacity: 0; }
+}
+
+/* Make entire bouquet Patronus-like */
+.bouquet {
+  position: relative;
+  filter: drop-shadow(0 0 25px rgba(0,255,255,0.8)) 
+          drop-shadow(0 0 50px rgba(0,200,255,0.6));
+  opacity: 0.85;
+  mix-blend-mode: screen;
+}
+
+/* Rose heads */
+.flower::before,
+.flower::after {
+  background: radial-gradient(circle at 50% 40%, 
+    rgba(200,255,255,0.9) 0%, 
+    rgba(100,255,255,0.6) 40%, 
+    rgba(0,180,255,0.3) 70%, 
+    transparent 100%);
+  filter: blur(4px) brightness(1.5);
+}
+.flower > i {
+  background: radial-gradient(circle, 
+    rgba(255,255,255,0.9) 0%, 
+    rgba(120,240,255,0.7) 50%, 
+    transparent 100%);
+  box-shadow: 0 0 25px rgba(150,255,255,0.9);
+}
+
+/* Stems */
+.stem {
+  background: linear-gradient(to top, 
+    rgba(0,255,200,0.7), 
+    rgba(0,180,255,0.3));
+  box-shadow: 0 0 15px rgba(0,255,255,0.6);
+}
+
+/* Leaves */
+.stem::before, .stem::after {
+  background: radial-gradient(circle, 
+    rgba(0,255,255,0.6), 
+    rgba(0,180,255,0.3));
+  filter: blur(2px);
+}
+
+/* Wrapping folds (now ethereal) */
+.fold, .wrap-base, .bottom-flap {
+  background: radial-gradient(circle at center, 
+    rgba(0,255,255,0.2), 
+    rgba(0,150,255,0.1) 60%, 
+    transparent 100%);
+  border: none;
+  box-shadow: 0 0 35px rgba(0,255,255,0.4);
+}
+
+/* Ribbon (spirit-like glow) */
+.ribbon {
+  background: radial-gradient(circle, 
+    rgba(255,255,255,0.9) 0%, 
+    rgba(150,240,255,0.7) 50%, 
+    transparent 100%);
+  box-shadow: 0 0 25px rgba(150,255,255,0.8);
+}
+
+/* Whole bouquet Patronus aura */
+.bouquet {
+  position: relative;
+  filter: drop-shadow(0 0 30px rgba(0,255,255,0.6)) 
+          drop-shadow(0 0 60px rgba(0,200,255,0.4));
+  opacity: 0.9;
+  mix-blend-mode: screen;
+}
+
+/* Roses (red Patronus glow) */
+.flower::before,
+.flower::after {
+  background: radial-gradient(circle at 50% 40%, 
+    rgba(255,120,140,0.95) 0%, 
+    rgba(255,60,80,0.8) 40%, 
+    rgba(180,0,40,0.5) 70%, 
+    transparent 100%);
+  filter: blur(2px) brightness(1.4);
+}
+.flower > i {
+  background: radial-gradient(circle, 
+    rgba(255,180,190,1) 0%, 
+    rgba(255,70,90,0.9) 50%, 
+    rgba(150,0,30,0.6) 100%);
+  box-shadow: 0 0 20px rgba(255,50,70,0.9), 0 0 35px rgba(255,0,50,0.6);
+}
+
+/* Stems Patronus style */
+.stem {
+  background: linear-gradient(to top, 
+    rgba(0,255,200,0.6), 
+    rgba(0,180,255,0.3));
+  box-shadow: 0 0 20px rgba(0,255,255,0.5);
+}
+
+/* Leaves Patronus style */
+.stem::before, .stem::after {
+  background: radial-gradient(circle, 
+    rgba(0,255,255,0.5), 
+    rgba(0,150,255,0.2));
+  filter: blur(2px);
+}
+
+/* Wrapping folds */
+.fold, .wrap-base, .bottom-flap {
+  background: radial-gradient(circle at center, 
+    rgba(0,255,255,0.15), 
+    rgba(0,150,255,0.1) 70%, 
+    transparent 100%);
+  border: none;
+  box-shadow: 0 0 40px rgba(0,255,255,0.4);
+}
+
+/* Ribbon glowing cyan */
+.ribbon {
+  background: radial-gradient(circle, 
+    rgba(200,255,255,0.9) 0%, 
+    rgba(120,200,255,0.6) 50%, 
+    transparent 100%);
+  box-shadow: 0 0 25px rgba(150,255,255,0.7);
+}
+
+/* Bigger top fan folds */
+.fold {
+  width: 300px;     /* was ~230px */
+  height: 240px;    /* was ~185px */
+  clip-path: polygon(50% 0%, 90% 60%, 50% 100%, 10% 60%);
+  background: radial-gradient(circle at center, rgba(0,255,255,0.18), rgba(0,150,255,0.08));
+  box-shadow: 0 0 45px rgba(0,255,255,0.45);
+  opacity: 0.95;
+}
+
+/* Bigger bottom wrap */
+.wrap-base {
+  width: 520px;      /* was 420px */
+  height: 340px;     /* was 260px */
+  border-radius: 260px 260px 40px 40px;
+  background: radial-gradient(120% 140% at 50% 20%, #0f2029 0 35%, #0a0a0a 70%, transparent 100%);
+  box-shadow: inset 0 -60px 140px rgba(0,0,0,0.6), 0 0 40px rgba(0,255,255,0.3);
+}
+
+/* Side wraps scale too */
+.wrap-base.side {
+  width: 460px;
+  height: 300px;
+  filter: brightness(0.9);
+  opacity: 0.92;
+}
+
+/* Larger bottom flaps */
+.bottom-flap {
+  width: 220px;
+  height: 220px;
+  border-radius: 100px 100px 30px 30px;
+  background: radial-gradient(circle at top, rgba(0,255,255,0.15), rgba(0,150,255,0.08));
+  box-shadow: 0 0 35px rgba(0,255,255,0.4);
+}
+
+/* Top folds */
+.fold {
+  width: 300px;
+  height: 240px;
+  clip-path: polygon(50% 0%, 90% 60%, 50% 100%, 10% 60%);
+  background: radial-gradient(circle at center, 
+    rgba(0, 200, 255, 0.35),   /* brighter cyan core */
+    rgba(0, 150, 200, 0.25) 60%, 
+    rgba(0, 100, 150, 0.18) 100%);
+  box-shadow: 0 0 40px rgba(0,255,255,0.35);
+  opacity: 0.8;   /* adjusted from ~0.95 → softer, balanced */
+}
+
+/* Bottom wrap */
+.wrap-base {
+  width: 520px;
+  height: 340px;
+  border-radius: 260px 260px 40px 40px;
+  background: radial-gradient(120% 140% at 50% 20%, 
+    rgba(0, 220, 255, 0.3) 0%, 
+    rgba(0, 150, 200, 0.25) 60%, 
+    rgba(0, 100, 150, 0.2) 100%);
+  box-shadow: inset 0 -60px 120px rgba(0,0,0,0.5), 0 0 30px rgba(0,255,255,0.25);
+  opacity: 0.85;  /* decreased to balance transparency */
+}
+
+/* Side wrap panels */
+.wrap-base.side {
+  width: 460px;
+  height: 300px;
+  opacity: 0.8;   /* was ~0.92, now more balanced */
+  filter: brightness(0.95);
+}
+
+/* Bottom flaps */
+.bottom-flap {
+  width: 220px;
+  height: 220px;
+  border-radius: 100px 100px 30px 30px;
+  background: radial-gradient(circle at top, 
+    rgba(0, 200, 255, 0.3), 
+    rgba(0, 120, 180, 0.25) 70%, 
+    rgba(0, 80, 120, 0.2) 100%);
+  box-shadow: 0 0 25px rgba(0,255,255,0.3);
+  opacity: 0.82; /* softer, but visible */
+}
+
+/* Top folds (darker base, cyan highlights) */
+.fold {
+  width: 300px;
+  height: 240px;
+  clip-path: polygon(50% 0%, 90% 60%, 50% 100%, 10% 60%);
+  background: radial-gradient(circle at center, 
+    rgba(0, 200, 255, 0.25) 0%, 
+    rgba(0, 80, 120, 0.25) 40%, 
+    rgba(0, 0, 0, 0.85) 100%);   /* deep black at edges */
+  box-shadow: 0 0 35px rgba(0,255,255,0.25);
+  opacity: 0.88; /* more solid, less see-through */
+}
+
+/* Bottom wrap (main cone) */
+.wrap-base {
+  width: 520px;
+  height: 340px;
+  border-radius: 260px 260px 40px 40px;
+  background: radial-gradient(120% 150% at 50% 25%, 
+    rgba(0, 200, 255, 0.2) 0%, 
+    rgba(0, 80, 120, 0.25) 40%, 
+    rgba(0, 0, 0, 0.9) 90%);   /* strong black bottom */
+  box-shadow: inset 0 -60px 120px rgba(0,0,0,0.8), 
+              0 0 25px rgba(0,255,255,0.2);
+  opacity: 0.9;
+}
+
+/* Side wrap panels */
+.wrap-base.side {
+  width: 460px;
+  height: 300px;
+  background: linear-gradient(to bottom, 
+    rgba(0, 200, 255, 0.15), 
+    rgba(0, 80, 120, 0.25) 40%, 
+    rgba(0,0,0,0.85) 100%);
+  opacity: 0.88;
+  filter: brightness(0.9);
+}
+
+/* Bottom flaps */
+.bottom-flap {
+  width: 220px;
+  height: 220px;
+  border-radius: 100px 100px 30px 30px;
+  background: radial-gradient(circle at top, 
+    rgba(0, 200, 255, 0.15), 
+    rgba(0, 80, 120, 0.2) 50%, 
+    rgba(0,0,0,0.85) 100%);
+  box-shadow: 0 0 20px rgba(0,255,255,0.25);
+  opacity: 0.86;
+}
+
+/* Small filler flowers */
+.filler {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #fff 60%, rgba(255,255,255,0) 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255,255,255,0.8);
+  animation: twinkle 3s ease-in-out infinite alternate;
+  z-index: 4;
+  mix-blend-mode: screen;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.5; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1.1); }
+}
+
+/* Slightly larger clusters */
+.filler-cluster {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+}
+.filler-cluster .filler {
+  position: absolute;
+}
+.filler-cluster .filler:nth-child(1) { top: 0; left: 15px; }
+.filler-cluster .filler:nth-child(2) { top: 15px; left: 0; }
+.filler-cluster .filler:nth-child(3) { top: 15px; left: 25px; }
+.filler-cluster .filler:nth-child(4) { top: 30px; left: 10px; }
+
+/* Filler stems */
+.filler-stem {
+  position: absolute;
+  bottom: 190px;  /* start a little above ribbon */
+  width: 3px;
+  height: 120px;
+  background: linear-gradient(to top, rgba(0,180,120,0.8), rgba(0,220,160,0.6));
+  border-radius: 3px;
+  z-index: 3;
+  transform-origin: bottom center;
+}
+
+/* Tiny leaves for filler stems */
+.filler-stem::before,
+.filler-stem::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 8px;
+  background: linear-gradient(to right, rgba(0,200,150,0.7), rgba(0,255,200,0.5));
+  border-radius: 8px;
+  top: 50%;
+}
+.filler-stem::before { left: -14px; transform: rotate(-25deg); }
+.filler-stem::after  { right: -14px; transform: rotate(25deg); }
+
+/* Cluster of white glowing filler flowers */
+.filler-head {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.filler-flower {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, #fff 70%, rgba(255,255,255,0) 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255,255,255,0.9), 0 0 15px rgba(200,255,255,0.6);
+  animation: twinkle 3s ease-in-out infinite alternate;
+}
+.filler-flower:nth-child(1) { top: 0; left: -8px; }
+.filler-flower:nth-child(2) { top: -5px; left: 8px; }
+.filler-flower:nth-child(3) { top: -12px; left: -2px; }
+
+.green-stem {
+  position: absolute;
+  bottom: 190px;
+  width: 4px;
+  height: 160px;
+  background: linear-gradient(to top, rgba(20,120,60,0.9), rgba(40,160,90,0.7));
+  border-radius: 3px;
+  z-index: 3;
+  transform-origin: bottom center;
+}
+.green-stem .leaf {
+  position: absolute;
+  width: 28px;
+  height: 14px;
+  background: linear-gradient(to right, rgba(40,200,120,0.9), rgba(80,255,160,0.7));
+  border-radius: 14px;
+}
+.green-stem .leaf.left  { left: -28px; transform: rotate(-25deg); }
+.green-stem .leaf.right { right: -28px; transform: rotate(25deg); }
+.green-stem .leaf:nth-child(1) { top: 15%; }
+.green-stem .leaf:nth-child(2) { top: 30%; }
+.green-stem .leaf:nth-child(3) { top: 45%; }
+.green-stem .leaf:nth-child(4) { top: 60%; }
+.green-stem .leaf:nth-child(5) { top: 75%; }
+
+/* Extended greenery stems (curved) */
+.extended-stem {
+  position: absolute;
+  bottom: 200px;
+  width: 5px;
+  height: 220px;
+  background: linear-gradient(to top, rgba(20,120,60,0.9), rgba(40,160,90,0.7));
+  border-radius: 50% / 100%;   /* curve effect */
+  z-index: 2;
+  transform-origin: bottom center;
+}
+
+/* Leaves for extended stems */
+.extended-stem .leaf {
+  position: absolute;
+  width: 34px;
+  height: 18px;
+  background: linear-gradient(to right, rgba(40,200,120,0.9), rgba(80,255,160,0.7));
+  border-radius: 16px;
+}
+.extended-stem .leaf.left  { left: -34px; transform: rotate(-25deg); }
+.extended-stem .leaf.right { right: -34px; transform: rotate(25deg); }
+
+/* Different leaf levels */
+.extended-stem .leaf:nth-child(1) { top: 20%; }
+.extended-stem .leaf:nth-child(2) { top: 40%; }
+.extended-stem .leaf:nth-child(3) { top: 60%; }
+.extended-stem .leaf:nth-child(4) { top: 80%; }
+
+/* Extended greenery stems (long + bending) */
+.extended-stem {
+  position: absolute;
+  bottom: 200px;
+  width: 6px;
+  height: 280px; /* longer than before */
+  background: linear-gradient(to top, rgba(20,120,60,0.9), rgba(40,160,90,0.7));
+  border-radius: 50% / 100%;   /* curve effect */
+  z-index: 2;
+  transform-origin: bottom center;
+}
+
+/* Leaves for extended stems */
+.extended-stem .leaf {
+  position: absolute;
+  width: 38px;
+  height: 20px;
+  background: linear-gradient(to right, rgba(40,200,120,0.9), rgba(80,255,160,0.7));
+  border-radius: 16px;
+}
+.extended-stem .leaf.left  { left: -38px; transform: rotate(-25deg); }
+.extended-stem .leaf.right { right: -38px; transform: rotate(25deg); }
+
+/* More leaves at different levels */
+.extended-stem .leaf:nth-child(1) { top: 15%; }
+.extended-stem .leaf:nth-child(2) { top: 35%; }
+.extended-stem .leaf:nth-child(3) { top: 55%; }
+.extended-stem .leaf:nth-child(4) { top: 75%; }
+.extended-stem .leaf:nth-child(5) { top: 90%; }
+
+/* Handle (bottom cloth grip) */
+.handle {
+  position: absolute;
+  bottom: -100px;        /* sits just below bouquet */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 160px;
+  background: radial-gradient(ellipse at center,
+    rgba(0,200,255,0.15) 0%,
+    rgba(0,80,120,0.25) 40%,
+    rgba(0,0,0,0.9) 90%);
+  border-radius: 80px 80px 20px 20px;
+  box-shadow: inset 0 -30px 70px rgba(0,0,0,0.8),
+              0 0 20px rgba(0,255,255,0.25);
+  z-index: 2;
+}
+
+/* Middle ribbon wrapping between bouquet and handle */
+.middle-ribbon {
+  position: absolute;
+  bottom: 40px;  /* adjust so it sits above the handle */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 50px;
+  background: radial-gradient(circle,
+    rgba(255,180,190,0.9) 0%,
+    rgba(255,70,90,0.7) 50%,
+    transparent 100%);
+  border-radius: 30px;
+  box-shadow:
+    0 0 25px rgba(255,120,140,0.9),
+    0 0 50px rgba(0,200,255,0.4),
+    inset 0 0 20px rgba(255,100,120,0.6);
+  z-index: 6;
+  mix-blend-mode: screen;
+  filter: blur(0.3px);
+  animation: ribbonPulse 4s ease-in-out infinite;
+}
+
+/* Ribbon bows with Patronus glow */
+.middle-ribbon .bow {
+  position: absolute;
+  top: 50%;
+  width: 70px;
+  height: 40px;
+  background: radial-gradient(circle,
+    rgba(255,200,210,0.95) 0%,
+    rgba(255,100,120,0.75) 50%,
+    transparent 100%);
+  border-radius: 50% 50% 50% 50%;
+  box-shadow:
+    0 0 20px rgba(255,100,140,0.9),
+    0 0 40px rgba(0,220,255,0.5);
+  filter: blur(0.5px);
+  animation: bowGlow 3s ease-in-out infinite alternate;
+}
+
+.middle-ribbon .bow.left {
+  left: -60px;
+  transform: translateY(-50%) rotate(-20deg);
+}
+.middle-ribbon .bow.right {
+  right: -60px;
+  transform: translateY(-50%) rotate(20deg);
+}
+
+/* Animations */
+@keyframes ribbonPulse {
+  0%,100% { box-shadow: 0 0 20px rgba(255,120,140,0.8), 0 0 40px rgba(0,200,255,0.4); opacity: 0.9; }
+  50%     { box-shadow: 0 0 30px rgba(255,180,200,1), 0 0 60px rgba(0,255,255,0.6); opacity: 1; }
+}
+
+@keyframes bowGlow {
+  0%   { transform: translateY(-50%) scale(1) rotate(var(--angle,0deg)); }
+  50%  { transform: translateY(-50%) scale(1.08) rotate(var(--angle,0deg)); }
+  100% { transform: translateY(-50%) scale(1) rotate(var(--angle,0deg)); }
+}
+
+/* Patronus Moon */
+.moon {
+  position: absolute;
+  top: 48px;
+  right: 80px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%,
+    #fff 0%,
+    #e6faff 40%,
+    #b0f0ff 70%,
+    transparent 80%);
+  box-shadow:
+    0 0 50px rgba(200,255,255,0.8),
+    0 0 120px rgba(100,200,255,0.6),
+    0 0 180px rgba(0,180,255,0.4);
+  animation: moonGlow 6s ease-in-out infinite alternate;
+  filter: blur(0.3px);
+}
+
+/* Glow shimmer animation */
+@keyframes moonGlow {
+  0%   { box-shadow: 0 0 40px rgba(200,255,255,0.7), 0 0 100px rgba(100,200,255,0.4); opacity: 0.9; }
+  50%  { box-shadow: 0 0 80px rgba(255,255,255,1), 0 0 160px rgba(150,255,255,0.7); opacity: 1; }
+  100% { box-shadow: 0 0 40px rgba(200,255,255,0.7), 0 0 100px rgba(100,200,255,0.4); opacity: 0.9; }
+}
+
+/* Patronus Vibe Background */
+body {
+  margin: 0;
+  height: 100%;
+  font-family: system-ui, sans-serif;
+  overflow: hidden;
+  position: relative;
+
+  /* Patronus aura gradient */
+  background: radial-gradient(circle at center,
+    rgba(0, 200, 255, 0.25) 0%,
+    rgba(0, 120, 200, 0.15) 30%,
+    rgba(10, 20, 40, 1) 100%);
+
+  /* Subtle glowing effect */
+  animation: backgroundShift 12s ease-in-out infinite alternate;
+}
+
+/* Background subtle shifting */
+@keyframes backgroundShift {
+  0%   { background: radial-gradient(circle at 40% 40%, rgba(0,220,255,0.3), rgba(10,20,40,1)); }
+  50%  { background: radial-gradient(circle at 60% 60%, rgba(0,180,255,0.4), rgba(15,25,50,1)); }
+  100% { background: radial-gradient(circle at 50% 50%, rgba(0,220,255,0.25), rgba(10,20,40,1)); }
+}
+
+/* 🌿 Wind sway for stems and flowers */
+@keyframes sway {
+  0%   { transform: rotate(-2deg); }
+  50%  { transform: rotate(2deg); }
+  100% { transform: rotate(-2deg); }
+}
+
+/* Apply sway but lock pivot at bottom */
+.stem, .green-stem, .extended-stem {
+  animation: sway 6s ease-in-out infinite;
+  transform-origin: bottom center;  /* 🌿 anchor at bottom */
+}
+
+/* 🌹 Flowers follow the sway */
+.flower {
+  animation: sway 6s ease-in-out infinite;
+  transform-origin: bottom center;  /* lock to stem base */
+}
+
+/* 🍃 Leaves flutter gently */
+@keyframes leafFlutter {
+  0%   { transform: rotate(-25deg) translateY(0); }
+  50%  { transform: rotate(-30deg) translateY(-1px); }
+  100% { transform: rotate(-25deg) translateY(0); }
+}
+
+.stem::before, .stem::after,
+.green-stem .leaf,
+.extended-stem .leaf {
+  animation: leafFlutter 5s ease-in-out infinite alternate;
+}
+
+/* SVG overlay that sits exactly over the bouquet */
+.curved-extensions{
+  position:absolute; inset:0; width:100%; height:100%;
+  pointer-events:none; z-index:3; /* behind roses (4/5), above wraps (1/2) */
+}
+
+/* The S-path visual (stroke only) */
+.curved-extensions .s-path{
+  fill:none;
+  stroke:url(#stemGrad);
+  stroke-width:6;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 10px rgba(0,255,200,0.5));
+}
+
+/* Leaves on the S curved stems */
+.curved-extensions .leaf{
+  fill:url(#leafGrad);
+  filter:drop-shadow(0 0 8px rgba(0,255,200,0.55));
+}
+
+/* Wavey motion for the whole S group */
+@keyframes sWave {
+  0%   { transform: rotate(-4deg); }
+  25%  { transform: rotate(-8deg); }
+  50%  { transform: rotate(-4deg); }
+  75%  { transform: rotate(2deg); }
+  100% { transform: rotate(-4deg); }
+}
+
+.s-stem{
+  transform-box: fill-box;        /* so transform-origin works in SVG */
+  transform-origin: 50% 100%;     /* pivot from bottom of each S group */
+  animation: sWave 9s ease-in-out infinite;
+}
+.s-stem.right-s{ animation-duration: 10.5s; animation-delay: -1.5s; } /* slight desync */
+
+/* 🌸 Intro Glow Animation */
+@keyframes introGlow {
+  0% {
+    opacity: 0;
+    filter: blur(60px) brightness(2) drop-shadow(0 0 120px rgba(0,180,255,1));
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(40px) brightness(1.8) drop-shadow(0 0 80px rgba(0,200,255,0.9));
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px) brightness(1) drop-shadow(0 0 25px rgba(0,255,255,0.6));
+    transform: scale(1);
+  }
+}
+
+/* Apply to whole bouquet */
+.bouquet {
+  opacity: 0;
+  animation: introGlow 4.5s ease-out forwards;
+}
+
+/* Flowers appear smoother */
+.flower, .stem, .fold, .wrap-base, .bottom-flap, .ribbon, .middle-ribbon {
+  opacity: 0;
+  animation: fadeIn 3s ease-in forwards;
+  animation-delay: 2s; /* flowers start appearing after glow */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; filter: blur(20px); }
+  to   { opacity: 1; filter: blur(0px); }
+}
+
+/* 🌟 Tiny glowing sprites (firefly effect) */
+.sprite {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(0, 200, 255, 0.9) 0%,
+    rgba(0, 150, 255, 0.5) 50%,
+    transparent 100%);
+  box-shadow: 0 0 12px rgba(0, 200, 255, 0.9), 
+              0 0 20px rgba(0, 180, 255, 0.6);
+  animation: floatSprite 30s linear infinite, twinkle 4s ease-in-out infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.8;
+}
+
+/* Give each sprite random position & delay */
+.sprite:nth-child(1)  { top: 5%;  left: 10%; animation-delay: 0s; }
+.sprite:nth-child(2)  { top: 15%; left: 80%; animation-delay: 3s; }
+.sprite:nth-child(3)  { top: 25%; left: 30%; animation-delay: 6s; }
+.sprite:nth-child(4)  { top: 35%; left: 60%; animation-delay: 9s; }
+.sprite:nth-child(5)  { top: 45%; left: 20%; animation-delay: 12s; }
+.sprite:nth-child(6)  { top: 55%; left: 70%; animation-delay: 15s; }
+.sprite:nth-child(7)  { top: 65%; left: 40%; animation-delay: 18s; }
+.sprite:nth-child(8)  { top: 75%; left: 85%; animation-delay: 21s; }
+.sprite:nth-child(9)  { top: 85%; left: 15%; animation-delay: 24s; }
+.sprite:nth-child(10) { top: 92%; left: 50%; animation-delay: 27s; }
+.sprite:nth-child(11) { top: 12%; left: 45%; animation-delay: 5s; }
+.sprite:nth-child(12) { top: 30%; left: 90%; animation-delay: 8s; }
+.sprite:nth-child(13) { top: 50%; left: 5%;  animation-delay: 11s; }
+.sprite:nth-child(14) { top: 70%; left: 35%; animation-delay: 14s; }
+.sprite:nth-child(15) { top: 88%; left: 75%; animation-delay: 17s; }
+
+/* Floating path */
+@keyframes floatSprite {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(50px, -60px) scale(1.1); }
+  50%  { transform: translate(-80px, -120px) scale(0.9); }
+  75%  { transform: translate(100px, 60px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* Twinkling glow */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; box-shadow: 0 0 8px rgba(0,200,255,0.6), 0 0 15px rgba(0,150,255,0.4); }
+  50%      { opacity: 1;   box-shadow: 0 0 14px rgba(0,220,255,1), 0 0 25px rgba(0,180,255,0.8); }
+}
+
+
+
+
+
+
